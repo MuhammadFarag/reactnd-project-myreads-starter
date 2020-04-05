@@ -1,6 +1,7 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
+import {getAll} from "./BooksAPI";
 
 class Book extends React.Component {
   render() {
@@ -31,20 +32,7 @@ class BookShelf extends React.Component {
 
 
   render() {
-    const books = [
-      {
-        id: "1",
-        title: 'To Kill a Mockingbird',
-        authors: 'Harper Lee',
-        backgroundImage: "http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api"
-      },
-      {
-        id: "2",
-        title: "Ender's Game",
-        authors: 'Orson Scott Card',
-        backgroundImage: "http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api"
-      }];
-
+    const books =this.props.books;
     return <div className="bookshelf">
       <h2 className="bookshelf-title">{this.props.title}</h2>
       <div className="bookshelf-books">
@@ -69,8 +57,27 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
+    currentlyReading: [],
     showSearchPage: false
   };
+
+  constructor(props) {
+    super(props);
+    getAll().then((r) => {
+      let new_state = {
+        currentlyReading: r.filter((v) => v.shelf === "currentlyReading").map((v) => (
+          {
+            id: v.id,
+            title: v.title,
+            authors: v.authors,
+            backgroundImage: v.imageLinks.smallThumbnail
+          }
+        ))
+      };
+      this.setState(new_state);
+    });
+  }
+
 
   render() {
     return (
@@ -103,7 +110,7 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf title="Currently Reading"/>
+                <BookShelf title="Currently Reading" books={this.state.currentlyReading}/>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">
