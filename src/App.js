@@ -36,7 +36,7 @@ class BookShelf extends React.Component {
 
 
   moveBookToAnotherShelf = (book_id, new_shelf) => {
-    this.props.onBookMoveToAnotherShelf(book_id, this.props.shelf, new_shelf);
+    this.props.onBookMoveToAnotherShelf(book_id, new_shelf);
   };
 
   render() {
@@ -96,7 +96,7 @@ class BooksApp extends React.Component {
     };
   }
 
-  moveBooksBetweenShelves = (book_id, old_shelf, new_shelf) => {
+  moveBooksBetweenShelves = (book_id, new_shelf) => {
     update({id: book_id}, new_shelf).then((_) => {
       this.books = this.books.map((book) => {
         if (book.id === book_id) {
@@ -144,11 +144,11 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf shelf="currentlyReading" title="Currently Reading" books={this.state.currentlyReading}
+                <BookShelf title="Currently Reading" books={this.state.currentlyReading}
                            onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
-                <BookShelf shelf="wantToRead" title="Want to Read" books={this.state.wantToRead}
+                <BookShelf title="Want to Read" books={this.state.wantToRead}
                            onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
-                <BookShelf shelf="read" title="Read" books={this.state.read}
+                <BookShelf title="Read" books={this.state.read}
                            onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
               </div>
             </div>
