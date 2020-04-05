@@ -32,7 +32,7 @@ class BookShelf extends React.Component {
 
 
   render() {
-    const books =this.props.books;
+    const books = this.props.books;
     return <div className="bookshelf">
       <h2 className="bookshelf-title">{this.props.title}</h2>
       <div className="bookshelf-books">
@@ -61,23 +61,27 @@ class BooksApp extends React.Component {
     showSearchPage: false
   };
 
+  books;
+
   constructor(props) {
     super(props);
     getAll().then((r) => {
-      let new_state = {
-        currentlyReading: r.filter((v) => v.shelf === "currentlyReading").map((v) => (
-          {
-            id: v.id,
-            title: v.title,
-            authors: v.authors,
-            backgroundImage: v.imageLinks.smallThumbnail
-          }
-        ))
-      };
-      this.setState(new_state);
+      this.books = r.map(this.backendBookFormatAdapter);
+      this.setState({
+        currentlyReading: this.books.filter((v) => v.shelf === "currentlyReading")
+      });
     });
   }
 
+  backendBookFormatAdapter(v) {
+    return {
+      id: v.id,
+      title: v.title,
+      authors: v.authors,
+      backgroundImage: v.imageLinks.smallThumbnail,
+      shelf: v.shelf
+    };
+  }
 
   render() {
     return (
