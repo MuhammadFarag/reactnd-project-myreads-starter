@@ -34,13 +34,13 @@ class BookShelf extends React.Component {
     const book1 = {
       title: 'To Kill a Mockingbird',
       authors: 'Harper Lee',
-      backgroundImage: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")'
+      backgroundImage: "http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api"
     };
 
     const book2 = {
       title: "Ender's Game",
       authors: 'Orson Scott Card',
-      backgroundImage: 'url("http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api")'
+      backgroundImage: "http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api"
     };
 
     return <div className="bookshelf">
@@ -49,11 +49,11 @@ class BookShelf extends React.Component {
         <ol className="books-grid">
           <li>
             <Book title={book1.title} authors={book1.authors}
-                  backgroundImage={book1.backgroundImage}/>
+                  backgroundImage={`url(${book1.backgroundImage})`}/>
           </li>
           <li>
             <Book title={book2.title} authors={book2.authors}
-                  backgroundImage={book2.backgroundImage}/>
+                  backgroundImage={`url(${book1.backgroundImage})`}/>
           </li>
         </ol>
       </div>
