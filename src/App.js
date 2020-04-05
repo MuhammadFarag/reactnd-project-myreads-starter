@@ -24,12 +24,28 @@ class BooksApp extends React.Component {
     super(props);
     getAll().then((r) => {
       this.books = r.map(this.backendBookFormatAdapter);
-      this.setState({
-        currentlyReading: this.books.filter((v) => v.shelf === "currentlyReading"),
-        wantToRead: this.books.filter((v) => v.shelf === "wantToRead"),
-        read: this.books.filter((v) => v.shelf === "read")
-      });
+      this.updateState();
     });
+  }
+
+  moveBooksBetweenShelves = (book_id, new_shelf) => {
+    update({id: book_id}, new_shelf).then((_) => {
+      this.books = this.books.map((book) => {
+        if (book.id === book_id) {
+          book.shelf = new_shelf
+        }
+        return book
+      });
+      this.updateState();
+    })
+  };
+
+  updateState() {
+    this.setState({
+      currentlyReading: this.books.filter((v) => v.shelf === "currentlyReading"),
+      wantToRead: this.books.filter((v) => v.shelf === "wantToRead"),
+      read: this.books.filter((v) => v.shelf === "read")
+    })
   }
 
   backendBookFormatAdapter(v) {
@@ -41,23 +57,6 @@ class BooksApp extends React.Component {
       shelf: v.shelf
     };
   }
-
-  moveBooksBetweenShelves = (book_id, new_shelf) => {
-    update({id: book_id}, new_shelf).then((_) => {
-      this.books = this.books.map((book) => {
-        if (book.id === book_id) {
-          book.shelf = new_shelf
-        }
-        return book
-      });
-
-      this.setState({
-        currentlyReading: this.books.filter((v) => v.shelf === "currentlyReading"),
-        wantToRead: this.books.filter((v) => v.shelf === "wantToRead"),
-        read: this.books.filter((v) => v.shelf === "read")
-      });
-    })
-  };
 
   render() {
     return (
