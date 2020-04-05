@@ -18,7 +18,7 @@ class BooksApp extends React.Component {
     showSearchPage: false
   };
 
-  books;
+  books = [];
 
   constructor(props) {
     super(props);
