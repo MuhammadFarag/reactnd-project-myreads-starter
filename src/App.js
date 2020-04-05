@@ -5,7 +5,7 @@ import {getAll, update} from "./BooksAPI";
 
 class Book extends React.Component {
   handleChange = (event) => {
-    this.props.onChange(event.target.value, this.props.id);
+    this.props.onBookMove(this.props.id, event.target.value);
   };
 
   render() {
@@ -35,8 +35,8 @@ class Book extends React.Component {
 class BookShelf extends React.Component {
 
 
-  handleChange = (value, id) => {
-    this.props.onChange(value, id);
+  moveBookToAnotherShelf = (book_id, new_shelf) => {
+    this.props.onBookMoveToAnotherShelf(book_id, this.props.shelf, new_shelf);
   };
 
   render() {
@@ -48,7 +48,8 @@ class BookShelf extends React.Component {
           {books.map((book) => (
             <li key={book.id}>
               <Book id={book.id} title={book.title} authors={book.authors}
-                    backgroundImage={`url(${book.backgroundImage})`} shelf={book.shelf} onChange={this.handleChange}/>
+                    backgroundImage={`url(${book.backgroundImage})`} shelf={book.shelf}
+                    onBookMove={this.moveBookToAnotherShelf}/>
             </li>
           ))}
         </ol>
@@ -95,19 +96,21 @@ class BooksApp extends React.Component {
     };
   }
 
-  handleChange = (value, id) => {
-    console.log(value);
-    console.log(id);
-    update({id: id}, value);
-    getAll().then((r) => {
-      this.books = r.map(this.backendBookFormatAdapter);
+  moveBooksBetweenShelves = (book_id, old_shelf, new_shelf) => {
+    update({id: book_id}, new_shelf).then((_) => {
+      this.books = this.books.map((book) => {
+        if (book.id === book_id) {
+          book.shelf = new_shelf
+        }
+        return book
+      });
+
       this.setState({
         currentlyReading: this.books.filter((v) => v.shelf === "currentlyReading"),
         wantToRead: this.books.filter((v) => v.shelf === "wantToRead"),
         read: this.books.filter((v) => v.shelf === "read")
       });
-    });
-
+    })
   };
 
   render() {
@@ -141,9 +144,12 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf title="Currently Reading" books={this.state.currentlyReading} onChange={this.handleChange}/>
-                <BookShelf title="Want to Read" books={this.state.wantToRead} onChange={this.handleChange}/>
-                <BookShelf title="Read" books={this.state.read} onChange={this.handleChange}/>
+                <BookShelf shelf="currentlyReading" title="Currently Reading" books={this.state.currentlyReading}
+                           onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
+                <BookShelf shelf="wantToRead" title="Want to Read" books={this.state.wantToRead}
+                           onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
+                <BookShelf shelf="read" title="Read" books={this.state.read}
+                           onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
               </div>
             </div>
             <div className="open-search">
