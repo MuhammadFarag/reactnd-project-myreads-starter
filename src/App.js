@@ -5,7 +5,7 @@ import './App.css'
 class BookShelf extends React.Component {
   render() {
     return <div className="bookshelf">
-      <h2 className="bookshelf-title">Currently Reading</h2>
+      <h2 className="bookshelf-title">{this.props.title}</h2>
       <div className="bookshelf-books">
         <ol className="books-grid">
           <li>
@@ -100,7 +100,7 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf/>
+                <BookShelf title="Currently Reading"/>
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">
