@@ -2,61 +2,7 @@ import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
 import {getAll, update} from "./BooksAPI";
-
-class Book extends React.Component {
-  handleChange = (event) => {
-    this.props.onBookMove(this.props.id, event.target.value);
-  };
-
-  render() {
-    return <div className="book">
-      <div className="book-top">
-        <div className="book-cover" style={{
-          width: 128,
-          height: 193,
-          backgroundImage: this.props.backgroundImage
-        }}/>
-        <div className="book-shelf-changer">
-          <select value={this.props.shelf} onChange={this.handleChange}>
-            <option value="move" disabled>Move to...</option>
-            <option value="currentlyReading">Currently Reading</option>
-            <option value="wantToRead">Want to Read</option>
-            <option value="read">Read</option>
-            <option value="none">None</option>
-          </select>
-        </div>
-      </div>
-      <div className="book-title">{this.props.title}</div>
-      <div className="book-authors">{this.props.authors}</div>
-    </div>;
-  }
-}
-
-class BookShelf extends React.Component {
-
-
-  moveBookToAnotherShelf = (book_id, new_shelf) => {
-    this.props.onBookMoveToAnotherShelf(book_id, new_shelf);
-  };
-
-  render() {
-    const books = this.props.books;
-    return <div className="bookshelf">
-      <h2 className="bookshelf-title">{this.props.title}</h2>
-      <div className="bookshelf-books">
-        <ol className="books-grid">
-          {books.map((book) => (
-            <li key={book.id}>
-              <Book id={book.id} title={book.title} authors={book.authors}
-                    backgroundImage={`url(${book.backgroundImage})`} shelf={book.shelf}
-                    onBookMove={this.moveBookToAnotherShelf}/>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </div>;
-  }
-}
+import BookShelf from "./components/BookShelf";
 
 class BooksApp extends React.Component {
   state = {
