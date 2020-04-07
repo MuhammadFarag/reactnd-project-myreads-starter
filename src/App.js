@@ -27,9 +27,7 @@ class BooksApp extends React.Component {
 
   books = [];
 
-  constructor(props) {
-    super(props);
-    // TODO: Load data in componentDidMount()
+  componentDidMount() {
     getAll().then((r) => {
       this.books = r.map(this.backendBookFormatAdapter);
       this.updateState();
