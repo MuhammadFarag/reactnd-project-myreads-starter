@@ -5,6 +5,12 @@ import {getAll, update} from "./BooksAPI";
 import BookShelf from "./components/BookShelf";
 
 class BooksApp extends React.Component {
+  /**
+   * TODO:
+   * deconstruct props when appropriate: const {x, y} = this.Props
+   * Use prototypes (type annotations for props)
+   */
+
   state = {
     /**
      * TODO: Instead of using this state variable to keep track of which page
@@ -22,6 +28,7 @@ class BooksApp extends React.Component {
 
   constructor(props) {
     super(props);
+    // TODO: Load data in componentDidMount()
     getAll().then((r) => {
       this.books = r.map(this.backendBookFormatAdapter);
       this.updateState();
