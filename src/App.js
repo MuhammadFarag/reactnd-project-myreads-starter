@@ -2,9 +2,9 @@ import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
 import {getAll, update} from "./BooksAPI";
-import BookShelf from "./components/BookShelf";
-import {Link, Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import Search from "./components/Search";
+import ListBooks from "./components/ListBooks";
 
 class BooksApp extends React.Component {
   /**
@@ -71,24 +71,8 @@ class BooksApp extends React.Component {
           <Search/>
         )}/>
         <Route exact path='/' render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <BookShelf title="Currently Reading" books={this.state.currentlyReading}
-                           onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
-                <BookShelf title="Want to Read" books={this.state.wantToRead}
-                           onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
-                <BookShelf title="Read" books={this.state.read}
-                           onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
-              </div>
-            </div>
-            <div className="open-search">
-              <Link to={{pathname: '/search'}}>Add a book</Link>
-            </div>
-          </div>
+          <ListBooks books={this.state.currentlyReading} onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}
+                     books1={this.state.wantToRead} books2={this.state.read}/>
         )}/>
 
       </div>
