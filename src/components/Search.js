@@ -10,21 +10,24 @@ class Search extends React.Component {
     books: []
   };
 
-  books = [];
-
+  // TODO: Update state on handling shelf change
   handleChange = (event) => {
     let value = event.target.value;
     this.setState({value: value});
     search(value).then((r) => {
-      console.log(value)
-      console.log(JSON.stringify(r));
       if (r !== undefined && r["error"] === undefined) {  // error is defined when the result is empty, r is undefined when search term is empty
         this.books = r.map(this.backendBookFormatAdapter);
-        this.setState({books: r.map(this.backendBookFormatAdapter)})
+        this.setState({
+          books: r.map(this.backendBookFormatAdapter).map(book => {
+            if (book.shelf !== "read" && book.shelf !== "wantToRead" && book.shelf !== "currentlyReading") {
+              book.shelf = "none"
+            }
+            return book
+          })
+        })
       } else {
         this.setState({books: []})
 
-        this.books = []
       }
 
     });
@@ -39,6 +42,10 @@ class Search extends React.Component {
       shelf: v.shelf
     };
   }
+
+  moveBookToAnotherShelf = (book_id, new_shelf) => {
+    this.props.onBookMoveToAnotherShelf(book_id, new_shelf);
+  };
 
   render() {
     const books = this.state.books;

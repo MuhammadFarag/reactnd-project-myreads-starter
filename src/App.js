@@ -15,7 +15,7 @@ class BooksApp extends React.Component {
 
   state = {
     /**
-     * TODO: Instead of using this state variable to keep track of which page
+     * TODO: Refresh page when back button is pressed
      */
     currentlyReading: [],
     wantToRead: [],
@@ -65,7 +65,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route path='/search' render={() => (
-          <Search/>
+          <Search onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}/>
         )}/>
         <Route exact path='/' render={() => (
           <ListBooks books={this.state.currentlyReading} onBookMoveToAnotherShelf={this.moveBooksBetweenShelves}
