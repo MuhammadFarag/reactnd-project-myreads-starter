@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {search, update} from "../BooksAPI";
+import {getAll, search, update} from "../BooksAPI";
 import Book from "./Book";
 
 class Search extends React.Component {
@@ -10,25 +10,29 @@ class Search extends React.Component {
     books: []
   };
 
-  /*
-  * TODO: Put books on the correct shelves
-  *  Load search results
-  *  Load all books (or pass from App)
-  *  If a book in the search result exists in the all books list, set the book shelf
-  *
-  * TODO: On update shelf
-  *  On update call success change the books state without making another API Call
-  * */
-
-  // TODO: Update state on handling shelf change
   handleChange = (event) => {
     let value = event.target.value;
     this.setState({value: value});
-    search(value).then((r) => {
-      if (r !== undefined && r["error"] === undefined) {  // error is defined when the result is empty, r is undefined when search term is empty
-        this.setState({
-          books: r.map(this.backendBookFormatAdapter)
-        })
+    search(value).then((searchResults) => {
+      if (searchResults !== undefined && searchResults["error"] === undefined) {  // error is defined when the result is empty, r is undefined when search term is empty
+        getAll().then((getAllResults) => {
+          const booksOnShelves = getAllResults.map(this.backendBookFormatAdapter)
+
+          this.setState({
+            books: searchResults.map(this.backendBookFormatAdapter).map((book) => {
+
+              let commonBook = booksOnShelves.find((b) => b.id === book.id)
+              console.log(JSON.stringify(commonBook));
+
+              if (commonBook !== undefined) {
+                book.shelf = commonBook.shelf
+              } else {
+                book.shelf = "none"
+              }
+              return book
+            })
+          })
+        });
       } else {
         this.setState({books: []})
       }
