@@ -39,7 +39,7 @@ class Search extends React.Component {
     });
   }
 
-  backendBookFormatAdapter(v) {   // TODO: Copied from App.js DRY?
+  backendBookFormatAdapter(v) {
     return {
       id: v.id,
       title: v.title,
