@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {search} from "../BooksAPI";
+import {search, update} from "../BooksAPI";
 import Book from "./Book";
 
 class Search extends React.Component {
@@ -10,30 +10,32 @@ class Search extends React.Component {
     books: []
   };
 
+  /*
+  * TODO: Put books on the correct shelves
+  *  Load search results
+  *  Load all books (or pass from App)
+  *  If a book in the search result exists in the all books list, set the book shelf
+  *
+  * TODO: On update shelf
+  *  On update call success change the books state without making another API Call
+  * */
+
   // TODO: Update state on handling shelf change
   handleChange = (event) => {
     let value = event.target.value;
     this.setState({value: value});
     search(value).then((r) => {
       if (r !== undefined && r["error"] === undefined) {  // error is defined when the result is empty, r is undefined when search term is empty
-        this.books = r.map(this.backendBookFormatAdapter);
         this.setState({
-          books: r.map(this.backendBookFormatAdapter).map(book => {
-            if (book.shelf !== "read" && book.shelf !== "wantToRead" && book.shelf !== "currentlyReading") {
-              book.shelf = "none"
-            }
-            return book
-          })
+          books: r.map(this.backendBookFormatAdapter)
         })
       } else {
         this.setState({books: []})
-
       }
-
     });
   }
 
-  backendBookFormatAdapter(v) {   // TODO: Copied from App.js DRY
+  backendBookFormatAdapter(v) {   // TODO: Copied from App.js DRY?
     return {
       id: v.id,
       title: v.title,
@@ -44,7 +46,17 @@ class Search extends React.Component {
   }
 
   moveBookToAnotherShelf = (book_id, new_shelf) => {
-    this.props.onBookMoveToAnotherShelf(book_id, new_shelf);
+    update({id: book_id}, new_shelf).then((_) => {
+      this.setState((previousState) => ({
+        books: previousState.books.map((book) => {
+
+          if (book.id === book_id) {
+            book.shelf = new_shelf
+          }
+          return book
+        })
+      }))
+    })
   };
 
   render() {
