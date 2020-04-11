@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 import {Route} from "react-router-dom";
 import Search from "./components/Search";
-import ListBooks from "./components/ListBooks";
+import Home from "./components/Home";
 
 class BooksApp extends React.Component {
 
@@ -13,7 +13,7 @@ class BooksApp extends React.Component {
           <Search/>
         )}/>
         <Route exact path='/' render={() => (
-          <ListBooks/>
+          <Home/>
         )}/>
       </div>
     )

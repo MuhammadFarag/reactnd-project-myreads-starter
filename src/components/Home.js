@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import * as PropTypes from "prop-types";
 import {getAll, update} from "../BooksAPI";
 
-class ListBooks extends React.Component {
+class Home extends React.Component {
   state = {
     currentlyReading: [],
     wantToRead: [],
@@ -73,11 +73,11 @@ class ListBooks extends React.Component {
   }
 }
 
-ListBooks.propTypes = {
+Home.propTypes = {
   books: PropTypes.any,
   onBookMoveToAnotherShelf: PropTypes.func,
   books1: PropTypes.any,
   books2: PropTypes.any
 };
 
-export default ListBooks
+export default Home
