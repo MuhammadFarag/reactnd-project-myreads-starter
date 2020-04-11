@@ -10,6 +10,13 @@ class Search extends React.Component {
     books: []
   };
 
+  static getDerivedStateFromProps = (props, previousState) => {
+    const previousBooks = previousState.books
+    const booksOnShelves = props.books
+    return {
+      books: Search.putBooksOnShelves(previousBooks, booksOnShelves)
+    }
+  }
   handleChange = (event) => {
     let value = event.target.value;
     this.setState({value: value});
