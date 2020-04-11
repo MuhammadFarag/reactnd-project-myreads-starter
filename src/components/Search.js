@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {getAll, search, update} from "../BooksAPI";
+import {search, update} from "../BooksAPI";
 import Book from "./Book";
 
 class Search extends React.Component {
@@ -15,24 +15,20 @@ class Search extends React.Component {
     this.setState({value: value});
     search(value).then((searchResults) => {
       if (searchResults !== undefined && searchResults["error"] === undefined) {  // error is defined when the result is empty, r is undefined when search term is empty
-        getAll().then((getAllResults) => {
-          const booksOnShelves = getAllResults.map(this.backendBookFormatAdapter)
+        this.setState({
+          books: searchResults
+            .map(this.backendBookFormatAdapter)
+            .map((book) => {
+              let commonBook = this.props.books.find((b) => b.id === book.id)
 
-          this.setState({
-            books: searchResults.map(this.backendBookFormatAdapter).map((book) => {
-
-              let commonBook = booksOnShelves.find((b) => b.id === book.id)
-              console.log(JSON.stringify(commonBook));
-
-              if (commonBook !== undefined) {
+              if (commonBook !== undefined) { // Didn't find the book
                 book.shelf = commonBook.shelf
               } else {
                 book.shelf = "none"
               }
               return book
             })
-          })
-        });
+        })
       } else {
         this.setState({books: []})
       }
