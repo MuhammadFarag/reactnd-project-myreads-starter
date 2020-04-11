@@ -17,30 +17,6 @@ class Search extends React.Component {
       books: Search.putBooksOnShelves(previousBooks, booksOnShelves)
     }
   }
-  handleChange = (event) => {
-    let value = event.target.value;
-    this.setState({value: value});
-    search(value).then((searchResults) => {
-      if (this.searchTermIsNotEmpty(searchResults) && this.searchResultIsNotEmpty(searchResults)) {
-        let adaptedSearchResults = searchResults.map(Search.backendBookFormatAdapter);
-        let booksOnShelves = this.props.books;
-
-        this.setState({
-          books: Search.putBooksOnShelves(adaptedSearchResults, booksOnShelves)
-        })
-      } else {
-        this.setState({books: []})
-      }
-    });
-  }
-
-  searchTermIsNotEmpty(searchResults) {
-    return searchResults !== undefined;
-  }
-
-  searchResultIsNotEmpty(searchResults) {
-    return searchResults["error"] === undefined;
-  }
 
   static putBooksOnShelves(searchResults, booksOnShelves) {
     return searchResults
@@ -63,6 +39,37 @@ class Search extends React.Component {
       backgroundImage: v.imageLinks.smallThumbnail,
       shelf: v.shelf
     };
+  }
+
+  handleChange = (event) => {
+    let value = event.target.value;
+    this.setState({value: value});
+    search(value).then((searchResults) => {
+      if (this.searchTermIsNotEmpty(searchResults) && this.searchResultIsNotEmpty(searchResults)) {
+        let adaptedSearchResults = searchResults
+          .filter(Search.bookHasThumbnail())
+          .map(Search.backendBookFormatAdapter);
+        let booksOnShelves = this.props.books;
+
+        this.setState({
+          books: Search.putBooksOnShelves(adaptedSearchResults, booksOnShelves)
+        })
+      } else {
+        this.setState({books: []})
+      }
+    });
+  }
+
+  static bookHasThumbnail() {
+    return (result) => result.imageLinks !== undefined && result.imageLinks.smallThumbnail !== undefined;
+  }
+
+  searchTermIsNotEmpty(searchResults) {
+    return searchResults !== undefined;
+  }
+
+  searchResultIsNotEmpty(searchResults) {
+    return searchResults["error"] === undefined;
   }
 
   moveBookToAnotherShelf = (book_id, new_shelf) => {
