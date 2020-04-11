@@ -15,8 +15,8 @@ class Home extends React.Component {
     read: props.books.filter((v) => v.shelf === "read"),
   });
 
-  moveBooksBetweenShelves = (book_id, new_shelf) => {
-    this.props.onBookShelfChange(book_id, new_shelf)
+  moveBooksBetweenShelves = (book, newShelf) => {
+    this.props.onBookShelfChange(book, newShelf)
   };
 
   render() {

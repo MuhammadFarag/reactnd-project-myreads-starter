@@ -2,19 +2,20 @@ import React from "react";
 
 class Book extends React.Component {
   handleChange = (event) => {
-    this.props.onBookMove(this.props.id, event.target.value);
+    this.props.onBookMove(this.props.book, event.target.value);
   };
 
   render() {
+    const {title, authors, backgroundImage, shelf} = this.props.book
     return <div className="book">
       <div className="book-top">
         <div className="book-cover" style={{
           width: 128,
           height: 193,
-          backgroundImage: this.props.backgroundImage
+          backgroundImage: `url(${backgroundImage})`
         }}/>
         <div className="book-shelf-changer">
-          <select value={this.props.shelf} onChange={this.handleChange}>
+          <select value={shelf} onChange={this.handleChange}>
             <option value="move" disabled>Move to...</option>
             <option value="currentlyReading">Currently Reading</option>
             <option value="wantToRead">Want to Read</option>
@@ -23,8 +24,8 @@ class Book extends React.Component {
           </select>
         </div>
       </div>
-      <div className="book-title">{this.props.title}</div>
-      <div className="book-authors">{this.props.authors}</div>
+      <div className="book-title">{title}</div>
+      <div className="book-authors">{authors}</div>
     </div>;
   }
 }

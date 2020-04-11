@@ -29,12 +29,12 @@ class BooksApp extends React.Component {
     };
   }
 
-  moveBookToShelf = (book_id, shelf) => {
-    update({id: book_id}, shelf).then((_) => {
+  moveBookToShelf = (bookToMove, shelf) => {
+    update({id: bookToMove.id}, shelf).then((_) => {
       getAll().then((allBooks) => {
         this.setState((_) => ({
           books: allBooks.map(BooksApp.backendBookFormatAdapter).map((book) => {
-            if (book.id === book_id) {
+            if (book.id === bookToMove.id) {
               book.shelf = shelf
             }
             return book

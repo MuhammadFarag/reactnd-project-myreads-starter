@@ -4,8 +4,8 @@ import Book from "./Book";
 class BookShelf extends React.Component {
 
 
-  moveBookToAnotherShelf = (book_id, new_shelf) => {
-    this.props.onBookMoveToAnotherShelf(book_id, new_shelf);
+  moveBookToAnotherShelf = (book, newShelf) => {
+    this.props.onBookMoveToAnotherShelf(book, newShelf);
   };
 
   render() {
@@ -16,9 +16,7 @@ class BookShelf extends React.Component {
         <ol className="books-grid">
           {books.map((book) => (
             <li key={book.id}>
-              <Book id={book.id} title={book.title} authors={book.authors}
-                    backgroundImage={`url(${book.backgroundImage})`} shelf={book.shelf}
-                    onBookMove={this.moveBookToAnotherShelf}/>
+              <Book book={book} onBookMove={this.moveBookToAnotherShelf}/>
             </li>
           ))}
         </ol>

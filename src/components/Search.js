@@ -72,8 +72,8 @@ class Search extends React.Component {
     return searchResults["error"] === undefined;
   }
 
-  moveBookToAnotherShelf = (book_id, new_shelf) => {
-    this.props.onBookShelfChange(book_id, new_shelf)
+  moveBookToAnotherShelf = (book, newShelf) => {
+    this.props.onBookShelfChange(book, newShelf)
   };
 
   render() {
@@ -99,9 +99,7 @@ class Search extends React.Component {
         <ol className="books-grid">
           {books.map((book) => (
             <li key={book.id}>
-              <Book id={book.id} title={book.title} authors={book.authors}
-                    backgroundImage={`url(${book.backgroundImage})`} shelf={book.shelf}
-                    onBookMove={this.moveBookToAnotherShelf}/>
+              <Book book={book} onBookMove={this.moveBookToAnotherShelf}/>
             </li>
           ))}
         </ol>
