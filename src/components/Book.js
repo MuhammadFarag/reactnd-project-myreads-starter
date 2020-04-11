@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 class Book extends React.Component {
   handleChange = (event) => {
@@ -31,3 +32,8 @@ class Book extends React.Component {
 }
 
 export default Book;
+
+Book.propTypes = {
+  book: PropTypes.any.isRequired,
+  onBookMove: PropTypes.func.isRequired
+}

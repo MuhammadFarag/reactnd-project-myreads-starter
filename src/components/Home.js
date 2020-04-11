@@ -1,6 +1,7 @@
 import React from "react";
 import BookShelf from "./BookShelf";
 import {Link} from "react-router-dom";
+import PropTypes from 'prop-types';
 
 class Home extends React.Component {
   state = {
@@ -42,3 +43,8 @@ class Home extends React.Component {
 }
 
 export default Home
+
+Home.propTypes = {
+  books: PropTypes.any.isRequired,
+  onBookShelfChange: PropTypes.func.isRequired
+}
