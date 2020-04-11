@@ -11,14 +11,6 @@ class BooksApp extends React.Component {
     books: []
   }
 
-  componentDidMount() {
-    getAll().then((r) => {
-      this.setState({
-        books: r.map(BooksApp.backendBookFormatAdapter)
-      })
-    });
-  }
-
   static backendBookFormatAdapter(v) {
     return {
       id: v.id,
@@ -29,18 +21,36 @@ class BooksApp extends React.Component {
     };
   }
 
+  componentDidMount() {
+    getAll().then((r) => {
+      this.setState({
+        books: r.map(BooksApp.backendBookFormatAdapter)
+      })
+    });
+  }
+
   moveBookToShelf = (bookToMove, shelf) => {
     update({id: bookToMove.id}, shelf).then((_) => {
-      getAll().then((allBooks) => {
-        this.setState((_) => ({
-          books: allBooks.map(BooksApp.backendBookFormatAdapter).map((book) => {
-            if (book.id === bookToMove.id) {
-              book.shelf = shelf
-            }
-            return book
-          })
-        }))
-      });
+      this.setState((previousState) => {
+
+        if (previousState.books.find((onShelf) => onShelf.id === bookToMove.id)) { // We already have the book in state
+          return ({
+            books: previousState.books.map((book) => {
+              if (book.id === bookToMove.id) {
+                book.shelf = shelf
+              }
+              return book
+            })
+          });
+
+        } else {
+          bookToMove.shelf = shelf
+          return {
+            books: previousState.books.concat(bookToMove)
+          }
+        }
+
+      })
     })
   };
 
