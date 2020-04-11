@@ -15,19 +15,11 @@ class Search extends React.Component {
     this.setState({value: value});
     search(value).then((searchResults) => {
       if (searchResults !== undefined && searchResults["error"] === undefined) {  // error is defined when the result is empty, r is undefined when search term is empty
-        this.setState({
-          books: searchResults
-            .map(this.backendBookFormatAdapter)
-            .map((book) => {
-              let commonBook = this.props.books.find((b) => b.id === book.id)
+        let adaptedSearchResults = searchResults.map(Search.backendBookFormatAdapter);
+        let booksOnShelves = this.props.books;
 
-              if (commonBook !== undefined) { // Didn't find the book
-                book.shelf = commonBook.shelf
-              } else {
-                book.shelf = "none"
-              }
-              return book
-            })
+        this.setState({
+          books: Search.putBooksOnShelves(adaptedSearchResults, booksOnShelves)
         })
       } else {
         this.setState({books: []})
@@ -35,7 +27,20 @@ class Search extends React.Component {
     });
   }
 
-  backendBookFormatAdapter(v) {
+  static putBooksOnShelves(searchResults, booksOnShelves) {
+    return searchResults
+      .map((searchResult) => {
+        let commonBook = booksOnShelves.find((onShelf) => onShelf.id === searchResult.id)
+        if (commonBook !== undefined) {
+          searchResult.shelf = commonBook.shelf
+        } else {
+          searchResult.shelf = "none"
+        }
+        return searchResult
+      });
+  }
+
+  static backendBookFormatAdapter(v) {
     return {
       id: v.id,
       title: v.title,
