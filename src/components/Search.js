@@ -14,7 +14,7 @@ class Search extends React.Component {
     let value = event.target.value;
     this.setState({value: value});
     search(value).then((searchResults) => {
-      if (searchResults !== undefined && searchResults["error"] === undefined) {  // error is defined when the result is empty, r is undefined when search term is empty
+      if (this.searchTermIsNotEmpty(searchResults) && this.searchResultIsNotEmpty(searchResults)) {
         let adaptedSearchResults = searchResults.map(Search.backendBookFormatAdapter);
         let booksOnShelves = this.props.books;
 
@@ -25,6 +25,14 @@ class Search extends React.Component {
         this.setState({books: []})
       }
     });
+  }
+
+  searchTermIsNotEmpty(searchResults) {
+    return searchResults !== undefined;
+  }
+
+  searchResultIsNotEmpty(searchResults) {
+    return searchResults["error"] === undefined;
   }
 
   static putBooksOnShelves(searchResults, booksOnShelves) {
