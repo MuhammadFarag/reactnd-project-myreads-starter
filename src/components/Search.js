@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {search, update} from "../BooksAPI";
+import {search} from "../BooksAPI";
 import Book from "./Book";
 
 class Search extends React.Component {
@@ -46,17 +46,7 @@ class Search extends React.Component {
   }
 
   moveBookToAnotherShelf = (book_id, new_shelf) => {
-    update({id: book_id}, new_shelf).then((_) => {
-      this.setState((previousState) => ({
-        books: previousState.books.map((book) => {
-
-          if (book.id === book_id) {
-            book.shelf = new_shelf
-          }
-          return book
-        })
-      }))
-    })
+    this.props.onBookShelfChange(book_id, new_shelf)
   };
 
   render() {
