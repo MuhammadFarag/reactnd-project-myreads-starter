@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import {Route} from "react-router-dom";
+import {BrowserRouter, Route} from "react-router-dom";
 import Search from "./components/Search";
 import Home from "./components/Home";
 import {getAll, update} from "./BooksAPI";
@@ -57,12 +57,14 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        <Route path='/search' render={() => (
-          <Search books={this.state.books} onBookShelfChange={this.moveBookToShelf}/>
-        )}/>
-        <Route exact path='/' render={() => (
-          <Home books={this.state.books} onBookShelfChange={this.moveBookToShelf}/>
-        )}/>
+        <BrowserRouter>
+          <Route path='/search' render={() => (
+            <Search books={this.state.books} onBookShelfChange={this.moveBookToShelf}/>
+          )}/>
+          <Route exact path='/' render={() => (
+            <Home books={this.state.books} onBookShelfChange={this.moveBookToShelf}/>
+          )}/>
+        </BrowserRouter>
       </div>
     )
   }
