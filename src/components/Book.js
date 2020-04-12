@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import {BookShelfChanger} from "./BookShelfChanger";
 
 class Book extends React.Component {
-  handleChange = (event) => {
-    this.props.onBookMove(this.props.book, event.target.value);
+
+  moveToShelf = (shelf) => {
+    this.props.onBookMove(this.props.book, shelf);
   };
 
   render() {
@@ -15,15 +17,7 @@ class Book extends React.Component {
           height: 193,
           backgroundImage: `url(${backgroundImage})`
         }}/>
-        <div className="book-shelf-changer">
-          <select value={shelf} onChange={this.handleChange}>
-            <option value="move" disabled>Move to...</option>
-            <option value="currentlyReading">Currently Reading</option>
-            <option value="wantToRead">Want to Read</option>
-            <option value="read">Read</option>
-            <option value="none">None</option>
-          </select>
-        </div>
+        <BookShelfChanger value={shelf} onChange={this.moveToShelf}/>
       </div>
       <div className="book-title">{title}</div>
       <div className="book-authors">{authors}</div>
